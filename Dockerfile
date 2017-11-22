@@ -8,8 +8,8 @@ WORKDIR ${_WORKDIR_}
 RUN apk update && apk upgrade && \
     apk --no-cache add build-base git python sudo && \
     git config --system http.sslverify false && \
-    mkdir ${_WORKDIR_} && \
-    cd ${_WORKDIR_} && \
+    mkdir ${_WORKSPACE_} && \
+    cd ${_WORKSPACE_} && \
     git clone https://github.com/JpEncausse/SARAH-Server-NodeJS.git sarah-server && \
     cd sarah-server/server/app && \
     npm install && \
