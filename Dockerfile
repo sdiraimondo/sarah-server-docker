@@ -1,17 +1,27 @@
 FROM node:alpine
 
+ENV _WORKDIR_ /home/pi/sarah-server
+ENV _WORKSPACE_ /home/pi
+
+WORKDIR ${_WORKDIR_}
+
 RUN apk update && apk upgrade && \
     apk --no-cache add build-base git python sudo && \
     git config --system http.sslverify false && \
-    mkdir /home/pi && \
-    cd /home/pi && \
+    mkdir ${_WORKDIR_} && \
+    cd ${_WORKDIR_} && \
     git clone https://github.com/JpEncausse/SARAH-Server-NodeJS.git sarah-server && \
     cd sarah-server/server/app && \
     npm install && \
-    sed 's/app.js &/app.js/' -i /home/pi/sarah-server/sarah-server.sh && \
-    chmod +x /home/pi/sarah-server/sarah-server.sh && \
+    sed 's/app.js &/app.js/' -i ${_WORKDIR_}/sarah-server.sh && \
+    chmod +x ${_WORKDIR_}/sarah-server.sh && \
     apk del git build-base python
 
+COPY ./docker-entrypoint.sh /
+
+ENV TZ Europe/Paris
 EXPOSE 8080 8888
-VOLUME /home/pi/sarah-server
-CMD ["/home/pi/sarah-server/sarah-server.sh", "start"]
+VOLUME _WORKDIR_
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["sarah-server.sh", "start"]
