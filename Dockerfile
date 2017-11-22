@@ -2,8 +2,7 @@ FROM node:alpine
 
 ENV _WORKDIR_ /home/pi/sarah-server
 ENV _WORKSPACE_ /home/pi
-
-WORKDIR ${_WORKDIR_}
+ENV TZ Europe/Paris
 
 RUN apk update && apk upgrade && \
     apk --no-cache add build-base git python sudo && \
@@ -19,8 +18,8 @@ RUN apk update && apk upgrade && \
 
 COPY ./docker-entrypoint.sh /
 
-ENV TZ Europe/Paris
 EXPOSE 8080 8888
+WORKDIR ${_WORKDIR_}
 VOLUME _WORKDIR_
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
