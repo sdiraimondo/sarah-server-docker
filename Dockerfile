@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:alpine
 
 RUN apk update && apk upgrade && \
     apk --no-cache add build-base git python sudo && \
